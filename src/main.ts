@@ -47,6 +47,12 @@ async function bootstrap() {
   }
   fs.writeFileSync('./docs/openapi.yaml', yaml.stringify(document));
 
+  // CORS: libera o frontend publicado (lista separada por vírgulas em CORS_ORIGINS)
+  app.enableCors({
+    origin: (process.env.CORS_ORIGINS ?? 'http://localhost:5173').split(',').map((o) => o.trim()),
+    methods: ['GET', 'POST', 'PATCH', 'DELETE'],
+  });
+
   // 5. Iniciar Servidor
   const port = process.env.PORT || 3000;
   await app.listen(port);
